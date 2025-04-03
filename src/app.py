@@ -81,5 +81,9 @@ metrics_data = [
 ]
 
 metrics_df = spark.createDataFrame(metrics_data, ["timestamp", "metric", "value"])
-metrics_df.write.mode("append").parquet(f"{model_save_path}/metrics.parquet")
+metrics_df.write.mode("append").option("header", "true").csv(f"{model_save_path}/metrics")
 print("Các metrics đã được lưu thành công.")
+
+print("Quá trình huấn luyện và đánh giá đã hoàn thành thành công!")
+# Đóng Spark session
+spark.stop()

@@ -1,0 +1,1 @@
+spark-submit --master yarn --deploy-mode client /home/hdfs/study/bda_sentiment/src/app.py
