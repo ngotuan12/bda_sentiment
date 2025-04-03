@@ -10,7 +10,7 @@ spark = SparkSession.builder \
 # load model
 model_name = "03042025_131813"
 parser = argparse.ArgumentParser()
-parser.add_argument('--model-name', type=str, required=True, help='Name of model to load')
+parser.add_argument('--model-name', type=str, required=False, help='Name of model to load')
 args = parser.parse_args()
 if args.model_name is not None and args.model_name != "":
     model_name = args.model_name
