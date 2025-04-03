@@ -6,6 +6,10 @@ import argparse
 spark = SparkSession.builder \
     .appName("Sentiment Analysis Realtime Prediction") \
     .master("yarn") \
+    .config("spark.executor.memory", "8g") \
+    .config("spark.executor.cores", "4") \
+    .config("spark.driver.memory", "8g") \
+    .config("spark.executor.instances", "1") \
     .getOrCreate()
 # load model
 model_name = "03042025_131813"
