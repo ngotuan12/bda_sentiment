@@ -43,7 +43,7 @@ query = predictions_to_kafka.writeStream \
     .format("kafka") \
     .option("kafka.bootstrap.servers", "10.10.101.13:9092") \
     .option("topic", "sentiment_predictions") \
-    .option("checkpointLocation", "/tmp/kafka_checkpoint") \
+    .option("checkpointLocation", "/home/hdfs/kafka/kafka_checkpoint/") \
     .outputMode("append") \
     .start()
 # wait for the termination of the query
