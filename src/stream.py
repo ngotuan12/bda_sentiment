@@ -28,6 +28,7 @@ lines = spark.readStream \
     .option("kafka.bootstrap.servers", kafka_server) \
     .option("subscribe", "sentiment_data") \
     .option("startingOffsets", "latest") \
+    .option("spark.jars", "/home/hdfs/jar/spark-sql-kafka-0-10_2.12-3.5.5.jar") \
     .load()
 # Data frame
 df = lines.selectExpr("CAST(value AS STRING) as text")
