@@ -1,0 +1,1 @@
+kafka-console-consumer.sh --topic sentiment_predictions --bootstrap-server 10.10.101.13:9092 --group sentiment-consumer-group

@@ -1,0 +1,1 @@
+echo "hello world" | kafka-console-producer.sh --topic sentiment_data --bootstrap-server 10.10.101.13:9092
