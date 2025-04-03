@@ -10,6 +10,8 @@ spark = SparkSession.builder \
     .config("spark.executor.cores", "2") \
     .config("spark.driver.memory", "2g") \
     .config("spark.executor.instances", "1") \
+    .config("spark.jars",
+            "/home/hdfs/jar/spark-sql-kafka-0-10_2.12-3.5.5.jar,/home/hdfs/kafka/kafka_2.13-4.0.0/libs/kafka-clients-4.0.0.jar") \
     .getOrCreate()
 # load model
 model_name = "03042025_131813"
@@ -28,7 +30,6 @@ lines = spark.readStream \
     .option("kafka.bootstrap.servers", kafka_server) \
     .option("subscribe", "sentiment_data") \
     .option("startingOffsets", "latest") \
-    .option("spark.jars", "/home/hdfs/jar/spark-sql-kafka-0-10_2.12-3.5.5.jar,/home/hdfs/kafka/kafka_2.13-4.0.0/libs/kafka-clients-4.0.0.jar") \
     .load()
 # Data frame
 df = lines.selectExpr("CAST(value AS STRING) as text")
