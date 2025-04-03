@@ -1,0 +1,2 @@
+kafka-topics.sh --create --topic sentiment_data --bootstrap-server 10.10.101.13:9092 --partitions 1 --replication-factor 1
+kafka-topics.sh --create --topic sentiment_predictions --bootstrap-server 10.10.101.13:9092 --partitions 1 --replication-factor 1
