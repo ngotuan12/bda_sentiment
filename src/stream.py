@@ -1,25 +1,23 @@
 from pyspark.ml import PipelineModel
 from pyspark.sql import SparkSession
 import argparse
+import os
 
+# check java home
+# require java 11 or higher
+print(os.environ.get('JAVA_HOME'))
 # initialization Spark Session with YARN
 spark = SparkSession.builder \
     .appName("Sentiment Analysis Realtime Prediction") \
     .master("yarn") \
-    .config("spark.executor.memory", "2g") \
-    .config("spark.executor.cores", "2") \
-    .config("spark.driver.memory", "2g") \
-    .config("spark.executor.instances", "1") \
-    .config("spark.jars",
-            "/home/hdfs/jar/spark-sql-kafka-0-10_2.12-3.5.5.jar,/home/hdfs/kafka/kafka_2.13-4.0.0/libs/kafka-clients-4.0.0.jar") \
     .getOrCreate()
 # load model
 model_name = "03042025_131813"
-# parser = argparse.ArgumentParser()
-# parser.add_argument('--model-name', type=str, required=False, help='Name of model to load')
-# args = parser.parse_args()
-# if args.model_name is not None and args.model_name != "":
-#     model_name = args.model_name
+parser = argparse.ArgumentParser()
+parser.add_argument('--model-name', type=str, required=False, help='Name of model to load')
+args = parser.parse_args()
+if args.model_name is not None and args.model_name != "":
+    model_name = args.model_name
 print(f"Model name: {model_name}")
 loaded_model = PipelineModel.load(f"/study/sentiment/model/{model_name}/")
 # load data
@@ -33,6 +31,11 @@ lines = spark.readStream \
     .load()
 # Data frame
 df = lines.selectExpr("CAST(value AS STRING) as text")
+# test stream
+# query = df.writeStream \
+#     .outputMode("append") \
+#     .format("console") \
+#     .start()
 # predict stream data
 predictions = loaded_model.transform(df)
 # select columns to send to Kafka
@@ -40,6 +43,11 @@ predictions_to_kafka = predictions.selectExpr(
     "CAST(text AS STRING) as key",
     "CAST(prediction AS STRING) as value"
 )
+# # test predictions
+# predictions_to_kafka.writeStream \
+#     .outputMode("append") \
+#     .format("console") \
+#     .start()
 # Start running the query that prints the running counts to the console
 query = predictions_to_kafka.writeStream \
     .format("kafka") \
