@@ -20,7 +20,7 @@ wss.on('connection', ws => {
 
   // Nhận dữ liệu từ client và gửi vào Kafka topic sentiment_data
   ws.on('message', async (message) => {
-    console.log(`📩 Received message from client: ${message}`);
+    console.log(`Received message from client: ${message}`);
     await producer.send({
       topic: 'sentiment_data',
       messages: [{ value: message }]
@@ -37,7 +37,7 @@ const startKafka = async () => {
   await consumer.run({
     eachMessage: async ({ message }) => {
       const prediction = message.value.toString();
-      console.log(`📤 Sending prediction to WebSocket clients: ${prediction}`);
+      console.log(`Sending prediction to WebSocket clients: ${prediction}`);
       // Gửi tới tất cả client đang kết nối
       wss.clients.forEach(client => {
         if (client.readyState === WebSocket.OPEN) {
