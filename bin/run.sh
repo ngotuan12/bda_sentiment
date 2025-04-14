@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Chạy ứng dụng Spark
-spark-submit --master yarn --deploy-mode cluster /home/hdfs/study/bda_sentiment/src/app.py
+spark-submit --master yarn --deploy-mode client /home/hdfs/study/bda_sentiment/src/app.py
 
 # Lấy thư mục model mới nhất (dựa vào timestamp)
 LATEST_MODEL=$(hdfs dfs -ls /study/sentiment/model | grep -v Found | sort -k6,7 -r | head -n 1 | awk '{print $8}')
