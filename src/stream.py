@@ -58,8 +58,7 @@ lines = spark.readStream \
     .option("startingOffsets", "latest") \
     .load()
 # Data frame
-
-df = lines.selectExpr("CAST(key AS STRING) as key", "CAST(value AS STRING) as text")
+df = lines.selectExpr("CAST(value AS STRING) as text")
 # test stream
 # query = df.writeStream \
 #     .outputMode("append") \
@@ -69,7 +68,7 @@ df = lines.selectExpr("CAST(key AS STRING) as key", "CAST(value AS STRING) as te
 predictions = loaded_model.transform(df)
 # select columns to send to Kafka
 predictions_to_kafka = predictions.selectExpr(
-    "CAST(key AS STRING) as key",
+    "CAST(text AS STRING) as key",
     "CAST(prediction AS STRING) as value"
 )
 # # test predictions
